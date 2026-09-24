@@ -145,7 +145,14 @@ public class Practice {
      * @return the number of levels in the tree
      */
     public static int levelCount(BinaryTreeNode<?> root) {
-        return 0;
+        if (root == null) {
+            return 0;
+        }
+
+        int leftHeight = levelCount(root.left);
+        int rightHeight = levelCount(root.right);
+
+        return 1 + Math.max(leftHeight, rightHeight);
     }
 
 
@@ -173,7 +180,15 @@ public class Practice {
      * @return the sum of the nodes at the given level
      */
     public static int sumAtLevel(BinaryTreeNode<Integer> root, int level) {
-        return 0;
+        if (root == null || level < 1) {
+            return 0;
+        }
+
+        if (level == 1) {
+            return root.data;
+        }
+
+        return sumAtLevel(root.left, level - 1) + sumAtLevel(root.right, level - 1);
     }
 
 
@@ -188,6 +203,25 @@ public class Practice {
      * @return true if the sums are equal, false otherwise
      */
     public static boolean sumMatch(BinaryTreeNode<Integer> root, ListNode<Integer> head) {
-        return false;
+        return treeSum(root) == listSum(head);
+    }
+
+    //helper method
+    private static int treeSum(BinaryTreeNode<Integer> root) {
+        if (root == null) {
+            return 0;
+        }
+        return root.data + treeSum(root.left) + treeSum(root.right);
+    }
+
+    //helper method
+    private static int listSum(ListNode<Integer> head) {
+        int sum = 0;
+        ListNode<Integer> current = head;
+        while (current != null) {
+            sum += current.data;
+            current = current.next;
+        }
+        return sum;
     }
 }
